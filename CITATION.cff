@@ -10,7 +10,6 @@ type: software
 authors:
   - given-names: Giancarlo
     family-names: Tamburello
-    name-suffix: GT
     email: giancarlo.tamburello@ingv.it
     affiliation: Istituto Nazionale di Geofisica e Vulcanologia
     orcid: 'https://orcid.org/0000-0001-7770-5226'
