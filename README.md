@@ -1,6 +1,4 @@
 # Ratio-Calc-R
-A Shiny app for processing fluids composition data and calculate ratios
-
 
 Ratio Calc R is a computational program suited for processing volcanic gas concentrations time series produced from any multisensor device (aka MultiGAS analyzer).
 
