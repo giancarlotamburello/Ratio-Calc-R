@@ -1,0 +1,40 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Ratio Calc R
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Giancarlo
+    family-names: Tamburello
+    name-suffix: GT
+    email: giancarlo.tamburello@ingv.it
+    affiliation: Istituto Nazionale di Geofisica e Vulcanologia
+    orcid: 'https://orcid.org/0000-0001-7770-5226'
+identifiers:
+  - type: url
+    value: 'https://github.com/giancarlotamburello/Ratio-Calc-R'
+repository-code: 'https://github.com/giancarlotamburello/Ratio-Calc-R'
+abstract: >-
+  Ratio Calc R is a computational program suited for
+  processing volcanic gas concentrations time series
+  produced from any multisensor device (aka MultiGAS
+  analyzer).
+
+
+  It is primarily intended for calculating gas molar ratio
+  (e.g. CO₂ and SO₂ ) and error respectively from the slope
+  and the correlation coefficient of the best fit line. In
+  addition, Ratiocalc provides an integration of satellite
+  maps from Google® (by the Google Static Maps API) that
+  enables an identification of the gas sources and/or
+  topographic elements.
+keywords:
+  - Volcanic gas
+  - Molar ratio
+  - MultiGAS
+license: GPL-3.0+
+date-released: '2023-11-30'
