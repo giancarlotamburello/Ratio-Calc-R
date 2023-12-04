@@ -7,19 +7,14 @@
 # RATIOCALC SCRIPT START
 #--------------------------------------------------------
 
-library("jsonlite")
-library("rlang")
-library("crayon")
 library("fields")
 library("sp")
 library("geosphere")
 library("shiny")
 library("png")
-library("RgoogleMaps")
 library("signal")
 library("MBA")
 library("spatial")
-library("fields")
 library("splines")
 library("aTSA")
 library("boot")
