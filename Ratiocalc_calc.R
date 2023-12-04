@@ -56,9 +56,9 @@ ratiocalc=function(files,
       
       setTxtProgressBar(pb,ii/nrow(df1))
       
-      if (!is.null(output) & !file.exists(output)) {
-        break()
-      }
+      # if (!is.null(output) & !file.exists(output) & FALSE) {
+      #   break()
+      # }
       
       
       if (diff(range(df1[ii:(ii+dt),marker.col]))< marker.lim) {
@@ -93,7 +93,7 @@ ratiocalc=function(files,
         d.num=diff(range(df1[ii:(ii+dt),num.col],na.rm=T))
         marker.max=max(df1[(ii+ccf1):(ii+dt+ccf1),marker.col],na.rm = T)
         
-        if(!is.na(coord.col)){
+        if(is.numeric(coord.col)){
           coords=c(mean(df1[(ii+ccf1):(ii+dt+ccf1),coord.col[1]],na.rm=T),
                    mean(df1[(ii+ccf1):(ii+dt+ccf1),coord.col[2]],na.rm=T))
         }else{
