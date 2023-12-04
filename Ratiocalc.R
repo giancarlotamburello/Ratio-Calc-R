@@ -164,7 +164,7 @@ ui <- function(){tagList(
                                plotOutput("plot3"))),
                     
                     tabPanel("Map",
-                             leafletOutput("mymap"),
+                             leafletOutput("mymap",height=600),
                              fluidRow(
                                #plotOutput("plot4",width = "100%"),
                                column(3,numericInput(inputId ="mzoom",label = "Zoom out:", 0)),
