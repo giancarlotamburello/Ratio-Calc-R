@@ -1,3 +1,23 @@
+# This function is used to automatically analyse volcanic gas time series to calculate molar ratios between two gas species.
+# The ratio is calculated as the slope of the best-fit line between the numerator (Y) and denominator (X) gas time series in a moving window of a certain width.
+# The calculation is accomplished if the gas marker concentration (an indicator of the presence of volcanic gas, e.g. SO₂ for magmatic gases) and the correlation coefficients
+# are greater than a threshold.
+# It works on both single or multiple files, it depends on whether the 'files' variable is a data frame or a list of file addresses.
+#
+# 'num.col' and 'den.col' are the column indexes in the data table for the numerator and denominator of the targeted gas ratio.
+# 'marker.col' is the column index for the gas species that is considered a marker of the presence of volcanic gas (e.g. SO₂ for magmatic gases).
+# 'coord.col' is a 2 elements array with the column indexes (e.g. 'c(4,5)') of longitude and latitude in decimal format. It is recommended to use it for traverses or moving measurements.
+# 'marker.lim' is the concentration limit of the selected gas marker above which the ratio can be calculated.
+# 'max.shift' is the maximum shift among the two gas time series that the algorithm can apply to maximize the correlation between numerator and denominator (set zero if no shift is applied).
+# 'cor.lim' is the minimum correlation coefficient (Pearson) for ratio calculation
+# 'time.str' is the time string format (must be the first column of the data table) if conversion into time is required (e.g. for 21-03-2022 10:11:01 set '%d-%m-%Y %H:%M:%S').
+# 'win.width' is the width in samples of the moving window where each ratio is calculated.
+# 'mov.step' are the steps (in samples) of the moving window.
+# 'peak.dist' is the distance (in samples) between the window edges and the maximum values of denominator and numerator. It avoids having truncated peaks in the calculation window.
+
+
+
+
 ratiocalc=function(files,
                    sep=";",
                    num.col=1,
@@ -10,10 +30,8 @@ ratiocalc=function(files,
                    time.str=NULL,
                    win.width=60,
                    mov.step=1,
-                   peak.dist=5,
-                   output=NULL
-){
-  
+                   peak.dist=5
+){  
   
   if (class(files) == "data.frame"){
     df1=files
@@ -55,12 +73,7 @@ ratiocalc=function(files,
     for (ii in seq(1+max.shift,nrow(df1)-dt-1-max.shift,mov.step)) {
       
       setTxtProgressBar(pb,ii/nrow(df1))
-      
-      # if (!is.null(output) & !file.exists(output) & FALSE) {
-      #   break()
-      # }
-      
-      
+       
       if (diff(range(df1[ii:(ii+dt),marker.col]))< marker.lim) {
         ID=ii
         next()
