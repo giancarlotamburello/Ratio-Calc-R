@@ -95,12 +95,12 @@ ui <- function(){tagList(
           column(6,selectInput(inputId = "xx",label = "Denominator:",choices = c("_"),selected = "_"))),
         
         #----------------------------
-        # Input: Select treshold and filter of numerator and denominator 
+        # Input: Select threshold and filter of numerator and denominator 
         
         fluidRow(
-          column(3,numericInput(inputId ="tyy",label =  "Treshold:", 0)),                 
+          column(3,numericInput(inputId ="tyy",label =  "Threshold:", 0)),                 
           column(3,numericInput(inputId ="fyy",label = "Filter:", 0)),
-          column(3,numericInput(inputId ="txx",label = "Treshold:", 0)),
+          column(3,numericInput(inputId ="txx",label = "Threshold:", 0)),
           column(3,numericInput(inputId ="fxx",label = "Filter:", 0))),
         
         
