@@ -59,7 +59,7 @@ ui <- function(){tagList(
       #----------------------------
       # Sidebar panel for inputs
       
-      sidebarPanel(
+      sidebarPanel(width = 3,
         
         #----------------------------
         # Input: Select a file and separator
@@ -68,19 +68,18 @@ ui <- function(){tagList(
           column(6,selectInput(inputId = "exm",label = "Examples:",choices = c("_","Lastarria","La Soufriere"),selected = "_") )),
         
         fluidRow(
-          column(7,fileInput("file", "Choose File",multiple = TRUE)),
+          column(5,fileInput("file", "Choose File",multiple = F,buttonLabel = icon("folder-open"))),
           fluidRow(column(3,radioButtons("sep", "Separator",choices = c(Comma = ",",Semicolon = ";",Tab = "\t"),selected = ";")),
-                   column(1,checkboxInput(inputId =   "firstcol",label ="Time",value = T)))
+                   column(3,checkboxInput(inputId =   "firstcol",label =p("First",br(),"column",br(),"time"),value = T)))
         ),
         
         #----------------------------
         # Input: Previous file, Filename and Next file
-        
+        fluidRow(column(10,verbatimTextOutput("filezip"))),
         fluidRow(
-          column(2,actionButton("prevcsv", "Prev",width = "100%")),
-          column(2,numericInput(inputId ="ncsv",value = 1,label = NULL)),
-          column(6,verbatimTextOutput("filezip")),
-          column(2,actionButton("nextcsv", "Next",width = "100%"))),
+          column(3,actionButton("prevcsv", "Prev",width = "100%")),
+          column(3,numericInput(inputId ="ncsv",value = 1,label = NULL)),
+          column(3,actionButton("nextcsv", "Next",width = "100%"))),
         
         
         tags$hr(),
@@ -95,12 +94,12 @@ ui <- function(){tagList(
           column(6,selectInput(inputId = "xx",label = "Denominator:",choices = c("_"),selected = "_"))),
         
         #----------------------------
-        # Input: Select threshold and filter of numerator and denominator 
+        # Input: Select treshold and filter of numerator and denominator 
         
         fluidRow(
-          column(3,numericInput(inputId ="tyy",label =  "Threshold:", 0)),                 
+          column(3,numericInput(inputId ="tyy",label =  "Treshold:", 0)),                 
           column(3,numericInput(inputId ="fyy",label = "Filter:", 0)),
-          column(3,numericInput(inputId ="txx",label = "Threshold:", 0)),
+          column(3,numericInput(inputId ="txx",label = "Treshold:", 0)),
           column(3,numericInput(inputId ="fxx",label = "Filter:", 0))),
         
         
@@ -117,17 +116,40 @@ ui <- function(){tagList(
         # Input: Select shift, shift on/off and plume marker, add current ratio
         
         fluidRow(
-          column(2,numericInput("sh", "Shift:",min = -20, max = 20,value = 0,step = 1)),
-          column(1,checkboxInput(inputId =   "fsh",label = NULL ,value = F)),
-          column(3,selectInput(inputId = "mm",label = "Marker:",choices = c("_"),selected = "_")),
-          column(1,checkboxInput(inputId =   "ptp",label = NULL ,value = F)),
-          column(5,fluidRow(
-            column(6,actionButton(  "ratio", "Add",width = "100%")),
-            column(6,actionButton(  "boot", "Boot",width = "100%"))
+          column(4,numericInput("sh", "Shift:",min = -20, max = 20,value = 0,step = 1)),
+ 
+          column(4,selectInput(inputId = "mm",label = "Marker:",choices = c("_"),selected = "_")),
+    
+          column(4,actionButton(  "boot", "Boot",width = "100%"))
             
-          )
           
-          )),
+          ),
+        
+        
+        fluidRow(
+          column(4,checkboxInput(inputId =   "fsh",label = "Auto shift" ,value = F)),
+          column(4,checkboxInput(inputId =   "ptp",label = "Plot marker" ,value = F)),
+          
+          column(4,actionButton(  "ratio", "Add",width = "100%"))
+          
+          ),
+        
+ 
+        
+        
+        # fluidRow(
+        #   column(2,numericInput("sh", "Shift:",min = -20, max = 20,value = 0,step = 1)),
+        #   column(1,checkboxInput(inputId =   "fsh",label = NULL ,value = F)),
+        #   column(3,selectInput(inputId = "mm",label = "Marker:",choices = c("_"),selected = "_")),
+        #   column(1,checkboxInput(inputId =   "ptp",label = NULL ,value = F)),
+        #   column(5,fluidRow(
+        #     column(6,actionButton(  "ratio", "Add",width = "100%")),
+        #     column(6,actionButton(  "boot", "Boot",width = "100%"))
+        #     
+        #   )
+        #   
+        #   )),
+        
         
         tags$hr(),
         
@@ -136,7 +158,7 @@ ui <- function(){tagList(
         fluidRow(
           column(3,selectInput(inputId = "lat",label = "Latitude:",choices = c("_"),selected = "_")),
           column(3,selectInput(inputId = "long",label = "Longitude:",choices = c("_"),selected = "_")),
-          column(1,checkboxInput(inputId =   "domap",label =   "",value = F))),
+          column(1,checkboxInput(inputId =   "domap",label ="Read position",value = F))),
         
         tags$hr()
         
@@ -167,7 +189,6 @@ ui <- function(){tagList(
                              leafletOutput("mymap",height=600),
                              fluidRow(
                                #plotOutput("plot4",width = "100%"),
-                               column(3,numericInput(inputId ="mzoom",label = "Zoom out:", 0)),
                                selectInput(inputId = "maptype",label = "Map type:",choices = c("Open Street Map" = "osm", "ESRI" = "esri"),selected = "osm")
                              )),
                     
@@ -616,14 +637,24 @@ server <- function(input, output,session) {
   # ADD RATIO BUTTON
   
   observeEvent(input$ratio,{
+
+    if (is.null(values$batch_row)) {
+      values$results_data=rbind(values$results_data,values$results_row)  
+    }else{
+      
+      values$results_data=rbind(values$results_data,values$batch_row)
+      values$batch_row=NULL
+    }
     
-    values$results_data=rbind(values$results_data,values$results_row)
+    
+    
     
     results=values$results_data
     
     save(results,file = paste("results_data",".RData",sep = ""))
     
     
+
     
   })
   
@@ -763,11 +794,10 @@ server <- function(input, output,session) {
     
     row.names(results_data)=NULL
     results_data
-    
-    dtout=datatable(results_data[,-1], rownames = F) %>%
-      formatRound(columns = c(4:8,10:16), digits=3)
-    
-  }, rownames = F)
+
+    dtout=datatable(results_data[,-1], rownames = F)  %>% formatRound(columns = c(4:7,10), digits=3) %>% formatRound(columns = 15:16, digits=6)
+      
+  }) 
   
   #----------
   # PLOT1 TIME SERIES
@@ -831,8 +861,8 @@ server <- function(input, output,session) {
       values$zm[1] = 0
     }
     
-    
-    plot(df,main=paste(time[as.integer(input$range[1])],time[as.integer(input$range[2])],sep=" - "))
+    plot(df,main="",oma.multi = c(3, 0, 3, 0))
+    mtext(text =  paste(time[as.integer(input$range[1])],time[as.integer(input$range[2])],sep=" - "),side = 3,padj = -3)
     
     abline(v = as.integer(input$range[1]),col="green",lwd=3)
     abline(v = as.integer(input$range[2]),col="red",lwd=3)
@@ -993,8 +1023,8 @@ server <- function(input, output,session) {
       df[,yy]=sgolayfilt(x = df[,yy],n = fyy)
     }
 
-    par(mai=c(1.02, 0.82, 0.82, 1.2))
     
+    par(mar=c(5.1, 4.1, 2.5, 2.2))
     
     plot(as.integer(input$range[1]):as.integer(input$range[2]),df[,xx],type="l",ylab =names(df)[xx],xlab="Time")
     lines(as.integer(input$range[1]):as.integer(input$range[2]),scale(df[,yy],min(df[,yy]),
@@ -1065,6 +1095,8 @@ server <- function(input, output,session) {
         longitude=reslong
       )
       
+      values$batch_row=values$results_row
+      
       
     }
     
@@ -1128,16 +1160,21 @@ server <- function(input, output,session) {
               "     max ",header[mm]," = ",format(mmax,digits = 1),"   ",mainres,"</b></font></pre>",sep="")
       })
       
+      par(mar=c(5.1, 6.1, 2.5, 2.1))
+      
       plot(df[df.ff,c(xx,yy)])  
       abline(a = df.lm$coefficients[1],b = df.lm$coefficients[2],col="red",lwd=3,lty=2)
     }else{
+      
+      par(mar=c(5.1, 6.1, 2.5, 2.1))
+      
       plot(df[df.ff,mm],df[df.ff,yy]/df[df.ff,xx],ylab =paste0(names(df)[yy],"/",names(df)[xx]),xlab =names(df)[mm])
       pp.ratio=lm(formula = (df[df.ff,yy]/df[df.ff,xx])~1/df[df.ff,mm],weights = df[df.ff,mm])$coefficients
       lines(sort(df[df.ff,mm]),1/sort(df[df.ff,mm])+pp.ratio,lty=2,col="red",lwd=3)
       output$text1 = renderText({
         
         paste('<pre><font face = "Arial" size = "3" color = "blue"><b>',"# sample = ",length(df[,xx]),
-              "     max ",header[mm]," = ",format(mmax,digits = 1),"   ",mainres,"    Asym = ",format(pp.ratio,digits = 1),"</b></font></pre>",sep="")
+              "     max ",header[mm]," = ",format(mmax,digits = 1),"   ",mainres,"    Asym = ",format(pp.ratio,digits = 3),"</b></font></pre>",sep="")
       })
     }
     
@@ -1174,7 +1211,7 @@ server <- function(input, output,session) {
     
     
     # 6
-    par(mar = c(5.1, 4.1,4.1, 10))	
+    par(mar = c(5.1, 4.1,2.1, 10))	
     plot(df[,c(long,lat)],xlab = "Longitude",ylab="Latitude")
     df=df[as.integer(input$range[1]):as.integer(input$range[2]),]
     
@@ -1248,12 +1285,6 @@ server <- function(input, output,session) {
     
     cols[as.integer(input$range[1]):as.integer(input$range[2])]=2
     
-    
-    # par(pty="s")
-    
-    
-    zmm=as.numeric(input$mzoom)/1000
-    
     df.merc=projectMercator(lat=df[,lat],long = df[,long])
     points(df.merc[,1],df.merc[,2])
     
@@ -1308,7 +1339,7 @@ server <- function(input, output,session) {
     dff=rbind(dff,data.frame(x=rep(dff$x+runif(dim(dff)[1],-.1,.1),2),y=c(rep(input$lowzero,dim(dff)[1]),rep(input$upzero,dim(dff)[1])),
                              z=rep(0,dim(dff)[1]*2)))
     
-    par(mar = c(5.1, 4.1,4.1, 10))	
+    par(mar = c(5.1, 4.1,2.1, 10))	
     plot(dff$x,dff$y,col=color.scale(dff[,3]),
          cex=scale(dff[,3],min(dff[,3]),diff(range(dff[,3])))*3+0.2
          ,pch=16,xlab = "Distance",ylab="Height")
@@ -1368,6 +1399,8 @@ server <- function(input, output,session) {
                    z=df[as.integer(input$range[1]):as.integer(input$range[2]),zz])
     dff=rbind(dff,data.frame(x=rep(dff$x+runif(dim(dff)[1],-.1,.1),2),y=c(rep(input$lowzero,dim(dff)[1]),rep(input$upzero,dim(dff)[1])),
                              z=rep(0,dim(dff)[1]*2)))      
+    
+    par(mar = c(5.1, 4.1,1.5, 10))	
     
     if (input$doICA == "spline") {
       
