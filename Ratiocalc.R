@@ -862,7 +862,7 @@ server <- function(input, output,session) {
     }
     
     plot(df,main="",oma.multi = c(3, 0, 3, 0))
-    mtext(text =  paste(time[as.integer(input$range[1])],time[as.integer(input$range[2])],sep=" - "),side = 3,padj = -3)
+    mtext(text =  paste(time[as.integer(input$range[1])],time[as.integer(input$range[2])],sep=" - "),side = 3,padj = -3,font=2)
     
     abline(v = as.integer(input$range[1]),col="green",lwd=3)
     abline(v = as.integer(input$range[2]),col="red",lwd=3)
