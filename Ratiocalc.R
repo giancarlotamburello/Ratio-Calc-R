@@ -1571,8 +1571,7 @@ server <- function(input, output,session) {
                       time.str=NULL,
                       win.width =input$winsize,
                       mov.step=input$movstep,
-                      peak.dist=input$peak,
-                      output=args[1])
+                      peak.dist=input$peak)
     
     save(results,file = "batch_data.RData")
     
