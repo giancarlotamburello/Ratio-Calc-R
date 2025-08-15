@@ -7,3 +7,7 @@ It is primarily intended for calculating gas molar ratio (e.g. CO₂ and SO₂ )
 This program is an R script and needs the installation of R (https://cran.r-project.org/) and the following packages: _shiny, leaflet, fields, sp, geosphere, png, signal, MBA, spatial, splines, aTSA, boot, simpleboot, DT_
 
 Source the contents of the _Ratiocalc.R_ script to run the app in your browser.
+
+Ratio Calc R is also available online upon registration here
+
+http://chimera.bo.ingv.it:8791/
