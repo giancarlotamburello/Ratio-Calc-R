@@ -8,6 +8,10 @@ This program is an R script and needs the installation of R (https://cran.r-proj
 
 Source the contents of the _Ratiocalc.R_ script to run the app in your browser.
 
-Ratio Calc R is also available online upon registration here
+Ratio Calc R is also available online upon registration here:
 
 http://chimera.bo.ingv.it:8791/
+
+Registration for a user name and password can be done here:
+
+https://sites.google.com/site/giancarlotamburello/ratiocalc-r
